@@ -1,9 +1,7 @@
-package fr.codebusters;
+package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.MarsRover;
-import fr.codebusters.rover.Direction;
-import fr.codebusters.rover.Plateau;
+import fr.codebusters.rover.dto.Plateau;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -47,7 +45,8 @@ public class MarsRoverTest {
     @FieldSource("shouldMoveOneWhenCallingMoveParams")
     void should_move_one_when_calling_move(Integer fromX, Integer fromY, Direction dir, Integer toX, Integer toY) {
         MarsRover rover = new MarsRover(fromX , fromY, dir);
-        rover.move(1, 1);
+        Plateau plateau = new Plateau(1, 1);
+        rover.move(plateau);
 
         assertEquals(toX, rover.getPosition().x());
         assertEquals(toY, rover.getPosition().y());
@@ -56,8 +55,9 @@ public class MarsRoverTest {
     @Test
     void should_move_around_mars_when_cross_limit() {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
-        rover.move(1, 1);
-        rover.move(1, 1);
+        Plateau plateau = new Plateau(1, 1);
+        rover.move(plateau);
+        rover.move(plateau);
         assertEquals(0, rover.getPosition().x());
         assertEquals(0, rover.getPosition().y());
     }

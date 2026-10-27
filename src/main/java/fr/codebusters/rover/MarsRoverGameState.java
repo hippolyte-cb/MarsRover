@@ -1,29 +1,51 @@
 package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
+import fr.codebusters.rover.dto.Plateau;
+import fr.codebusters.rover.dto.RoverMission;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public record MarsRoverGameState(Plateau plateau, SequencedMap<MarsRover, List<String>> roversCommandMap) {
+public final class MarsRoverGameState {
+    private final Plateau plateau;
+    private final List<RoverMission> missions;
 
-    public MarsRoverGameState(Plateau plateau, SequencedMap<MarsRover, List<String>> roversCommandMap) {
+
+    public MarsRoverGameState(Plateau plateau, List<RoverMission> missions) {
         this.plateau = plateau;
-        this.roversCommandMap = Collections.unmodifiableSequencedMap(roversCommandMap);
+        this.missions = missions;
     }
 
     public String processGame() throws InvalidFormatException {
-        for (MarsRover rover : roversCommandMap.keySet()) {
-            for (String command : roversCommandMap().get(rover)) {
-                for (int i = 0; i < command.length(); i++) {
-                    rover.processCommand(command.charAt(i), plateau);
-                }
+        for (RoverMission mission : missions) {
+            for (int i = 0; i < mission.commands().length(); i++) {
+                mission.rover().processCommand(mission.commands().charAt(i), plateau);
             }
         }
-        return roversCommandMap
-                .keySet()
+        return missions
                 .stream()
-                .map(rover -> "%d %d %s".formatted(rover.getPosition().x(), rover.getPosition().y(), rover.getDir()))
+                .map(mission -> "%d %d %s".formatted(
+                        mission.rover().getPosition().x(),
+                        mission.rover().getPosition().y(),
+                        mission.rover().getDir()
+                ))
                 .collect(Collectors.joining("\r\n"));
     }
+
+    public Plateau plateau() {
+        return plateau;
+    }
+
+    public List<RoverMission> missions() {
+        return missions;
+    }
+
+    @Override
+    public String toString() {
+        return "MarsRoverGameState[" +
+                "plateau=" + plateau + ", " +
+                "missions=" + missions + ']';
+    }
+
 }

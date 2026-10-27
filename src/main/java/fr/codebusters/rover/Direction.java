@@ -1,6 +1,7 @@
 package fr.codebusters.rover;
 
 public enum Direction {
+    // Order MUST NOT be changed
     N(0, 1),
     E(1, 0),
     S(0, -1),

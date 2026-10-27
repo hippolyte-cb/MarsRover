@@ -1,9 +1,8 @@
 package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
-
-import java.util.Map;
-import java.util.Optional;
+import fr.codebusters.rover.dto.Plateau;
+import fr.codebusters.rover.dto.Position;
 
 public class MarsRover {
 
@@ -32,24 +31,21 @@ public class MarsRover {
         this.dir = this.dir.right();
     }
 
-    public void move(int limitX, int limitY) {
+    public void move(Plateau plateau) {
         this.position = new Position(
-                Math.floorMod(position.x() + dir.stepX, limitX + 1),
-                Math.floorMod(position.y() + dir.stepY, limitY + 1)
+                Math.floorMod(position.x() + dir.stepX, plateau.limitX() + 1),
+                Math.floorMod(position.y() + dir.stepY, plateau.limitY() + 1)
         );
     }
 
 
     public void processCommand(Character command, Plateau plateau) throws InvalidFormatException {
-        final Map<Character, Runnable> lookupTable = Map.of(
-                'L', this::turnLeft,
-                'R', this::turnRight,
-                'M', () -> this.move(plateau.limitX(), plateau.limitY())
-        );
-
-        Optional.ofNullable(lookupTable.get(command))
-                .orElseThrow(() -> new InvalidFormatException("Character %s is not a valid character".formatted(command)))
-                .run();
+        switch (command) {
+            case 'L' -> turnLeft();
+            case 'R' -> turnRight();
+            case 'M' -> move(plateau);
+            default -> throw new InvalidFormatException("Character %s is not a valid character".formatted(command));
+        }
     }
 
     @Override

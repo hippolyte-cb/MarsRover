@@ -1,7 +1,8 @@
-package fr.codebusters;
+package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.*;
+import fr.codebusters.rover.dto.Plateau;
+import fr.codebusters.rover.dto.RoverMission;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -9,8 +10,6 @@ import org.junit.jupiter.params.provider.FieldSource;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,18 +24,15 @@ public class MarsRoverInputParserTest {
         assertEquals(5, plateau.limitX());
         assertEquals(5, plateau.limitY());
 
-        Map<MarsRover, List<String>> rovers = gameState.roversCommandMap();
-        assertEquals(1, rovers.size());
+        List<RoverMission> missions = gameState.missions();
+        assertEquals(1, missions.size());
 
-        Optional<MarsRover> optionalRover = rovers.keySet().stream().findFirst();
-        assertTrue(optionalRover.isPresent());
-        MarsRover rover = optionalRover.get();
+        MarsRover rover = missions.getFirst().rover();
 
         assertEquals(1, rover.getPosition().x());
         assertEquals(2, rover.getPosition().y());
         assertEquals(Direction.N, rover.getDir());
-        assertEquals(1, rovers.get(rover).size());
-        assertEquals("LMLMLMLMM", rovers.get(rover).getFirst());
+        assertEquals("LMLMLMLMM", missions.getFirst().commands());
     }
 
     private static final Collection<Arguments> invalidInputSource = List.of(
