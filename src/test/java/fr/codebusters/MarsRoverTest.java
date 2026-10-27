@@ -19,7 +19,7 @@ public class MarsRoverTest {
 
     @Test
     void should_turn_left_when_calling_turnLeft() {
-        MarsRover rover = new MarsRover(0 , 0, Direction.N, "");
+        MarsRover rover = new MarsRover(0 , 0, Direction.N);
         rover.turnLeft();
 
         assertEquals(Direction.W, rover.getDir());
@@ -27,7 +27,7 @@ public class MarsRoverTest {
 
     @Test
     void should_turn_right_when_calling_turnRight() {
-        MarsRover rover = new MarsRover(0 , 0, Direction.N, "");
+        MarsRover rover = new MarsRover(0 , 0, Direction.N);
         rover.turnRight();
 
         assertEquals(Direction.E, rover.getDir());
@@ -45,7 +45,7 @@ public class MarsRoverTest {
     @ParameterizedTest
     @FieldSource("shouldMoveOneWhenCallingMoveParams")
     void should_move_one_when_calling_move(Integer fromX, Integer fromY, Direction dir, Integer toX, Integer toY) {
-        MarsRover rover = new MarsRover(fromX , fromY, dir, "");
+        MarsRover rover = new MarsRover(fromX , fromY, dir);
         rover.move(1, 1);
 
         assertEquals(toX, rover.getX());
@@ -54,7 +54,7 @@ public class MarsRoverTest {
 
     @Test
     void should_move_around_mars_when_cross_limit() {
-        MarsRover rover = new MarsRover(0, 0, Direction.N, "");
+        MarsRover rover = new MarsRover(0, 0, Direction.N);
         rover.move(1, 1);
         rover.move(1, 1);
         assertEquals(0, rover.getX());
@@ -63,24 +63,24 @@ public class MarsRoverTest {
 
     @Test
     void should_turn_left_when_process_L_command() throws InvalidFormatException {
-        MarsRover rover = new MarsRover(0, 0, Direction.N, "L");
-        rover.processCommand(1, 1);
+        MarsRover rover = new MarsRover(0, 0, Direction.N);
+        rover.processCommand('L', 1, 1);
 
         assertEquals(Direction.W, rover.getDir());
     }
 
     @Test
     void should_turn_right_when_process_R_command() throws InvalidFormatException {
-        MarsRover rover = new MarsRover(0, 0, Direction.N, "R");
-        rover.processCommand(1, 1);
+        MarsRover rover = new MarsRover(0, 0, Direction.N);
+        rover.processCommand('R', 1, 1);
 
         assertEquals(Direction.E, rover.getDir());
     }
 
     @Test
     void should_move_when_process_M_command() throws InvalidFormatException {
-        MarsRover rover = new MarsRover(0, 0, Direction.N, "M");
-        rover.processCommand(1, 1);
+        MarsRover rover = new MarsRover(0, 0, Direction.N);
+        rover.processCommand('M', 1, 1);
 
         assertEquals(0, rover.getX());
         assertEquals(1, rover.getY());
@@ -88,7 +88,7 @@ public class MarsRoverTest {
 
     @Test
     void should_throw_invalid_format_exception_when_process_unknown_command() {
-        MarsRover rover = new MarsRover(0, 0, Direction.N, "T");
-        assertThrows(InvalidFormatException.class, () -> rover.processCommand(1, 1));
+        MarsRover rover = new MarsRover(0, 0, Direction.N);
+        assertThrows(InvalidFormatException.class, () -> rover.processCommand('T', 1, 1));
     }
 }

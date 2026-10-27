@@ -10,7 +10,6 @@ public class MarsRover {
     private int x;
     private int y;
     private Direction dir;
-    private final String command;
 
     public int getX() {
         return x;
@@ -24,16 +23,11 @@ public class MarsRover {
         return dir;
     }
 
-    public String getCommand() {
-        return command;
-    }
 
-
-    public MarsRover(int x, int y, Direction dir, String command) {
+    public MarsRover(int x, int y, Direction dir) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.command = command;
     }
 
     public void turnLeft() {
@@ -60,19 +54,16 @@ public class MarsRover {
     }
 
 
-    public void processCommand(int limitX, int limitY) throws InvalidFormatException {
+    public void processCommand(Character command, int limitX, int limitY) throws InvalidFormatException {
         final Map<Character, Runnable> lookupTable = Map.of(
                 'L', this::turnLeft,
                 'R', this::turnRight,
                 'M', () -> this.move(limitX, limitY)
         );
 
-        for (int i = 0; i < command.length(); i++) {
-            Character currentCommand = command.charAt(i);
-            Optional.ofNullable(lookupTable.get(currentCommand))
-                    .orElseThrow(() -> new InvalidFormatException("Character %s is not a valid character".formatted(currentCommand)))
-                    .run();
-        }
+        Optional.ofNullable(lookupTable.get(command))
+                .orElseThrow(() -> new InvalidFormatException("Character %s is not a valid character".formatted(command)))
+                .run();
     }
 
     @Override

@@ -12,9 +12,10 @@ import org.junit.jupiter.params.provider.FieldSource;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MarsRoverInputParserTest {
 
@@ -26,14 +27,18 @@ public class MarsRoverInputParserTest {
         assertEquals(5, gameState.limitX());
         assertEquals(5, gameState.limitY());
 
-        List<MarsRover> rovers = gameState.rovers();
+        Map<MarsRover, List<String>> rovers = gameState.roversCommandMap();
         assertEquals(1, rovers.size());
 
-        MarsRover rover = rovers.getFirst();
+        Optional<MarsRover> optionalRover = rovers.keySet().stream().findFirst();
+        assertTrue(optionalRover.isPresent());
+        MarsRover rover = optionalRover.get();
+
         assertEquals(1, rover.getX());
         assertEquals(2, rover.getY());
         assertEquals(Direction.N, rover.getDir());
-        assertEquals("LMLMLMLMM", rover.getCommand());
+        assertEquals(1, rovers.get(rover).size());
+        assertEquals("LMLMLMLMM", rovers.get(rover).getFirst());
     }
 
     private static final Collection<Arguments> invalidInputSource = List.of(

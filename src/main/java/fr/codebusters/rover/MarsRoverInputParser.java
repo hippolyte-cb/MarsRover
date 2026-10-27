@@ -2,8 +2,9 @@ package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
 
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.SequencedMap;
 
 public class MarsRoverInputParser {
     public static MarsRoverGameState parseInput(List<String> input) throws InvalidFormatException {
@@ -12,7 +13,7 @@ public class MarsRoverInputParser {
         }
 
         int limitX, limitY;
-        List<MarsRover> rovers = new LinkedList<>();
+        SequencedMap<MarsRover, List<String>> rovers = new LinkedHashMap<>();
         String[] limits = input.getFirst().strip().split("\\s+");
         try {
             limitX = Integer.parseInt(limits[0]);
@@ -27,16 +28,16 @@ public class MarsRoverInputParser {
                 throw new InvalidFormatException("Rover descriptor must have 3 fields");
             }
             try {
-                rovers.add(
+                rovers.put(
                         new MarsRover(
                                 Integer.parseInt(roverString[0]),
                                 Integer.parseInt(roverString[1]),
-                                Direction.valueOf(roverString[2]),
-                                input.get(i + 1)
-                        )
+                                Direction.valueOf(roverString[2])
+                        ),
+                        List.of(input.get(i + 1))
                 );
             } catch (NumberFormatException e) {
-                throw new InvalidFormatException("The coordinates of rovers must be valid integers");
+                throw new InvalidFormatException("The coordinates of roversCommandMap must be valid integers");
             } catch (IllegalArgumentException e) {
                 throw new InvalidFormatException("The direction doesn't exist");
             }
