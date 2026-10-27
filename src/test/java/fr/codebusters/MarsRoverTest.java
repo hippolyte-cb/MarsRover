@@ -37,7 +37,9 @@ public class MarsRoverTest {
             Arguments.arguments(0, 0, Direction.N, 0, 1),
             Arguments.arguments(0, 1, Direction.S, 0, 0),
             Arguments.arguments(0, 0, Direction.E, 1, 0),
-            Arguments.arguments(1, 0, Direction.W, 0, 0)
+            Arguments.arguments(1, 0, Direction.W, 0, 0),
+            Arguments.arguments(0, 0, Direction.W, 1, 0),
+            Arguments.arguments(0, 0, Direction.S, 0, 1)
     );
 
     @ParameterizedTest

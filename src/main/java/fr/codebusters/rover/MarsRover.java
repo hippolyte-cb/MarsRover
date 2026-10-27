@@ -56,8 +56,8 @@ public class MarsRover {
         int[] step = dirStepMapping.get(this.dir);
         int stepX = step[0], stepY = step[1];
 
-        x = (x + stepX) % (limitX + 1);
-        y = (y + stepY) % (limitY + 1);
+        x = Math.floorMod(x + stepX, limitX + 1);
+        y = Math.floorMod(y + stepY, limitY + 1);
     }
 
 

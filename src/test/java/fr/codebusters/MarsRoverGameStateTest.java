@@ -5,11 +5,12 @@ import fr.codebusters.rover.MarsRover;
 import fr.codebusters.rover.MarsRoverGameState;
 import fr.codebusters.utils.Direction;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.FieldSource;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,15 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MarsRoverGameStateTest {
 
-    @TempDir
-    Path tempDir;
-
     @Test
     void should_create_correct_game_state_when_giving_correct_file() throws IOException, InvalidFormatException {
-        Path file = tempDir.resolve("input.txt");
-        Files.writeString(file, "5 5\r\n1 2 N\r\nLMLMLMLMM");
-
-        MarsRoverGameState gameState = new MarsRoverGameState(file.toString());
+        List<String> input = List.of("5 5", "1 2 N", "LMLMLMLMM");
+        MarsRoverGameState gameState = new MarsRoverGameState(input);
 
         assertEquals(5, gameState.limitX);
         assertEquals(5, gameState.limitY);
@@ -40,40 +36,16 @@ public class MarsRoverGameStateTest {
         assertEquals("LMLMLMLMM", rover.getCommand());
     }
 
-    @Test
-    void should_throw_IOException_when_file_does_not_exist() {
-        assertThrows(IOException.class, () -> new MarsRoverGameState("unknown.txt"));
-    }
+    private static final Collection<Arguments> invalidInputSource = List.of(
+            Arguments.arguments(List.of("5 5", "1 2 N")),
+            Arguments.arguments(List.of("5 5", "1 N")),
+            Arguments.arguments(List.of("5 5", "1 A N")),
+            Arguments.arguments(List.of("5 5", "1 2 O"))
+    );
 
-    @Test
-    void should_throw_InvalidFormatException_when_file_has_even_number_of_lines() throws IOException {
-        Path file = tempDir.resolve("input.txt");
-        Files.writeString(file, "5 5\r\n1 2 N");
-
-        assertThrows(InvalidFormatException.class, () -> new MarsRoverGameState(file.toString()));
-    }
-
-    @Test
-    void should_throw_InvalidFormatException_when_file_has_invalid_rover_descriptor() throws IOException {
-        Path file = tempDir.resolve("input.txt");
-        Files.writeString(file, "5 5\r\n1 N\r\nLLMM");
-
-        assertThrows(InvalidFormatException.class, () -> new MarsRoverGameState(file.toString()));
-    }
-
-    @Test
-    void should_throw_InvalidFormatException_when_file_has_rover_with_invalid_coordinate() throws IOException {
-        Path file = tempDir.resolve("input.txt");
-        Files.writeString(file, "5 5\r\n1 A N\r\nLLMM");
-
-        assertThrows(InvalidFormatException.class, () -> new MarsRoverGameState(file.toString()));
-    }
-
-    @Test
-    void should_throw_InvalidFormatException_when_file_has_rover_with_invalid_direction() throws IOException {
-        Path file = tempDir.resolve("input.txt");
-        Files.writeString(file, "5 5\r\n1 0 O\r\nLLMM");
-
-        assertThrows(InvalidFormatException.class, () -> new MarsRoverGameState(file.toString()));
+    @ParameterizedTest
+    @FieldSource("invalidInputSource")
+    void should_throw_InvalidFormatException_when_file_has_even_number_of_lines(List<String> input) {
+        assertThrows(InvalidFormatException.class, () -> new MarsRoverGameState(input));
     }
 }
