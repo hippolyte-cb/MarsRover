@@ -2,7 +2,7 @@ package fr.codebusters;
 
 import fr.codebusters.exception.InvalidFormatException;
 import fr.codebusters.rover.MarsRover;
-import fr.codebusters.utils.Direction;
+import fr.codebusters.rover.Direction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

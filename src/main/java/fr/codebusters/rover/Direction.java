@@ -1,4 +1,4 @@
-package fr.codebusters.utils;
+package fr.codebusters.rover;
 
 import java.util.Map;
 

@@ -1,6 +1,5 @@
 package fr.codebusters.rover;
 
-import fr.codebusters.utils.Direction;
 import fr.codebusters.exception.InvalidFormatException;
 
 import java.util.Map;

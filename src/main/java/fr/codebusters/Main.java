@@ -1,6 +1,7 @@
 package fr.codebusters;
 
 import fr.codebusters.exception.InvalidFormatException;
+import fr.codebusters.rover.MarsRoverInputParser;
 import fr.codebusters.rover.MarsRoverGameState;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class Main {
 
         try {
             List<String> input = Files.readAllLines(Path.of(args[0]));
-            MarsRoverGameState gameState = new MarsRoverGameState(input);
+            MarsRoverGameState gameState = MarsRoverInputParser.parseInput(input);
             System.out.println(gameState.processGame());
         } catch (IOException e) {
             System.err.printf("Cannot open the file %s\n", args[0]);
