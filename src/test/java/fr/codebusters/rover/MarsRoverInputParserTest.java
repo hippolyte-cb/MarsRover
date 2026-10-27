@@ -39,7 +39,12 @@ public class MarsRoverInputParserTest {
             Arguments.arguments(List.of("5 5", "1 2 N")),
             Arguments.arguments(List.of("5 5", "1 N")),
             Arguments.arguments(List.of("5 5", "1 A N")),
-            Arguments.arguments(List.of("5 5", "1 2 O"))
+            Arguments.arguments(List.of("5 5", "1 2 O")),
+            Arguments.arguments(List.of("-1 5", "0 0 N", "M")),
+            Arguments.arguments(List.of("5 5 5", "0 0 N", "M")),
+            Arguments.arguments(List.of("5 A", "0 0 N", "M")),
+            Arguments.arguments(List.of("5 5", "9 9 N", "M")),
+            Arguments.arguments(List.of("5 5", "1 1 N", "MX"))
     );
 
     @ParameterizedTest
