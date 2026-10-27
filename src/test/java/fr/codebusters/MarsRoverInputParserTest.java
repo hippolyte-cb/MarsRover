@@ -1,10 +1,7 @@
 package fr.codebusters;
 
 import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.MarsRover;
-import fr.codebusters.rover.MarsRoverGameState;
-import fr.codebusters.rover.Direction;
-import fr.codebusters.rover.MarsRoverInputParser;
+import fr.codebusters.rover.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -23,9 +20,10 @@ public class MarsRoverInputParserTest {
     void should_create_correct_game_state_when_giving_correct_file() throws InvalidFormatException {
         List<String> input = List.of("5 5", "1 2 N", "LMLMLMLMM");
         MarsRoverGameState gameState = MarsRoverInputParser.parseInput(input);
+        Plateau plateau = gameState.plateau();
 
-        assertEquals(5, gameState.limitX());
-        assertEquals(5, gameState.limitY());
+        assertEquals(5, plateau.limitX());
+        assertEquals(5, plateau.limitY());
 
         Map<MarsRover, List<String>> rovers = gameState.roversCommandMap();
         assertEquals(1, rovers.size());
@@ -34,8 +32,8 @@ public class MarsRoverInputParserTest {
         assertTrue(optionalRover.isPresent());
         MarsRover rover = optionalRover.get();
 
-        assertEquals(1, rover.getX());
-        assertEquals(2, rover.getY());
+        assertEquals(1, rover.getPosition().x());
+        assertEquals(2, rover.getPosition().y());
         assertEquals(Direction.N, rover.getDir());
         assertEquals(1, rovers.get(rover).size());
         assertEquals("LMLMLMLMM", rovers.get(rover).getFirst());

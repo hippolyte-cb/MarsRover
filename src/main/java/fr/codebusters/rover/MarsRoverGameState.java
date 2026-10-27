@@ -5,11 +5,10 @@ import fr.codebusters.exception.InvalidFormatException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public record MarsRoverGameState(int limitX, int limitY, SequencedMap<MarsRover, List<String>> roversCommandMap) {
+public record MarsRoverGameState(Plateau plateau, SequencedMap<MarsRover, List<String>> roversCommandMap) {
 
-    public MarsRoverGameState(int limitX, int limitY, SequencedMap<MarsRover, List<String>> roversCommandMap) {
-        this.limitX = limitX;
-        this.limitY = limitY;
+    public MarsRoverGameState(Plateau plateau, SequencedMap<MarsRover, List<String>> roversCommandMap) {
+        this.plateau = plateau;
         this.roversCommandMap = Collections.unmodifiableSequencedMap(roversCommandMap);
     }
 
@@ -17,14 +16,14 @@ public record MarsRoverGameState(int limitX, int limitY, SequencedMap<MarsRover,
         for (MarsRover rover : roversCommandMap.keySet()) {
             for (String command : roversCommandMap().get(rover)) {
                 for (int i = 0; i < command.length(); i++) {
-                    rover.processCommand(command.charAt(i), limitX, limitY);
+                    rover.processCommand(command.charAt(i), plateau);
                 }
             }
         }
         return roversCommandMap
                 .keySet()
                 .stream()
-                .map(rover -> "%d %d %s".formatted(rover.getX(), rover.getY(), rover.getDir()))
+                .map(rover -> "%d %d %s".formatted(rover.getPosition().x(), rover.getPosition().y(), rover.getDir()))
                 .collect(Collectors.joining("\r\n"));
     }
 }

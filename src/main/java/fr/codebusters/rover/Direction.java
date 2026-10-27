@@ -1,31 +1,24 @@
 package fr.codebusters.rover;
 
-import java.util.Map;
-
 public enum Direction {
-    N,
-    E,
-    S,
-    W;
+    N(0, 1),
+    E(1, 0),
+    S(0, -1),
+    W(-1, 0);
 
-    private static final Map<Direction, Direction> leftMapping = Map.of(
-            Direction.N, Direction.W,
-            Direction.W, Direction.S,
-            Direction.S, Direction.E,
-            Direction.E, Direction.N
-    );
-    private static final Map<Direction, Direction> rightMapping = Map.of(
-            Direction.N, Direction.E,
-            Direction.E, Direction.S,
-            Direction.S, Direction.W,
-            Direction.W, Direction.N
-    );
+    final int stepX;
+    final int stepY;
+
+    Direction(int stepX, int stepY) {
+        this.stepX = stepX;
+        this.stepY = stepY;
+    }
 
     public Direction left() {
-        return leftMapping.get(this);
+        return values()[(ordinal() + 3) % 4];
     }
 
     public Direction right() {
-        return rightMapping.get(this);
+        return values()[(ordinal() + 1) % 4];
     }
 }

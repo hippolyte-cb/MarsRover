@@ -4,6 +4,7 @@ import fr.codebusters.exception.InvalidFormatException;
 import fr.codebusters.rover.Direction;
 import fr.codebusters.rover.MarsRover;
 import fr.codebusters.rover.MarsRoverGameState;
+import fr.codebusters.rover.Plateau;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
@@ -19,7 +20,7 @@ public class MarsRoverGameStateTest {
         roverCommandMap.put(new MarsRover(1, 2, Direction.N),  List.of("LMLMLMLMM"));
         roverCommandMap.put(new MarsRover(3, 3, Direction.E), List.of("MMRMMRMRRM"));
 
-        var game = new MarsRoverGameState(5, 5, roverCommandMap);
+        var game = new MarsRoverGameState(new Plateau(5, 5), roverCommandMap);
         assertEquals("1 3 N\r\n5 1 E", game.processGame());
     }
 }

@@ -3,6 +3,7 @@ package fr.codebusters;
 import fr.codebusters.exception.InvalidFormatException;
 import fr.codebusters.rover.MarsRover;
 import fr.codebusters.rover.Direction;
+import fr.codebusters.rover.Plateau;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -48,8 +49,8 @@ public class MarsRoverTest {
         MarsRover rover = new MarsRover(fromX , fromY, dir);
         rover.move(1, 1);
 
-        assertEquals(toX, rover.getX());
-        assertEquals(toY, rover.getY());
+        assertEquals(toX, rover.getPosition().x());
+        assertEquals(toY, rover.getPosition().y());
     }
 
     @Test
@@ -57,14 +58,14 @@ public class MarsRoverTest {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
         rover.move(1, 1);
         rover.move(1, 1);
-        assertEquals(0, rover.getX());
-        assertEquals(0, rover.getY());
+        assertEquals(0, rover.getPosition().x());
+        assertEquals(0, rover.getPosition().y());
     }
 
     @Test
     void should_turn_left_when_process_L_command() throws InvalidFormatException {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
-        rover.processCommand('L', 1, 1);
+        rover.processCommand('L', new Plateau(1, 1));
 
         assertEquals(Direction.W, rover.getDir());
     }
@@ -72,7 +73,7 @@ public class MarsRoverTest {
     @Test
     void should_turn_right_when_process_R_command() throws InvalidFormatException {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
-        rover.processCommand('R', 1, 1);
+        rover.processCommand('R', new Plateau(1, 1));
 
         assertEquals(Direction.E, rover.getDir());
     }
@@ -80,15 +81,15 @@ public class MarsRoverTest {
     @Test
     void should_move_when_process_M_command() throws InvalidFormatException {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
-        rover.processCommand('M', 1, 1);
+        rover.processCommand('M', new Plateau(1, 1));
 
-        assertEquals(0, rover.getX());
-        assertEquals(1, rover.getY());
+        assertEquals(0, rover.getPosition().x());
+        assertEquals(1, rover.getPosition().y());
     }
 
     @Test
     void should_throw_invalid_format_exception_when_process_unknown_command() {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
-        assertThrows(InvalidFormatException.class, () -> rover.processCommand('T', 1, 1));
+        assertThrows(InvalidFormatException.class, () -> rover.processCommand('T', new Plateau(1, 1)));
     }
 }

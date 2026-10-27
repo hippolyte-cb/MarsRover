@@ -12,12 +12,14 @@ public class MarsRoverInputParser {
             throw new InvalidFormatException("There must be an odd number of lines.");
         }
 
-        int limitX, limitY;
+        Plateau plateau;
         SequencedMap<MarsRover, List<String>> rovers = new LinkedHashMap<>();
         String[] limits = input.getFirst().strip().split("\\s+");
         try {
-            limitX = Integer.parseInt(limits[0]);
-            limitY = Integer.parseInt(limits[1]);
+            plateau = new Plateau(
+                    Integer.parseInt(limits[0]),
+                    Integer.parseInt(limits[1])
+            );
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             throw new InvalidFormatException("First line must contains 2 numbers identify the limit of the map");
         }
@@ -43,6 +45,6 @@ public class MarsRoverInputParser {
             }
         }
 
-        return new MarsRoverGameState(limitX, limitY, rovers);
+        return new MarsRoverGameState(plateau, rovers);
     }
 }
