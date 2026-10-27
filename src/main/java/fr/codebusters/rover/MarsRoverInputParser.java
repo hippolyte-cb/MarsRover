@@ -1,8 +1,8 @@
 package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.dto.Plateau;
-import fr.codebusters.rover.dto.RoverMission;
+import fr.codebusters.rover.domain.Plateau;
+import fr.codebusters.rover.domain.RoverMission;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +17,14 @@ public class MarsRoverInputParser {
         List<RoverMission> missions = new LinkedList<>();
 
         for (int i = 1; i < input.size(); i += 2) {
-            missions.add(getRoverMission(input, i));
+            RoverMission mission = getRoverMission(input, i);
+            if (!plateau.contains(mission.rover().getPosition())) {
+                throw new InvalidFormatException("Rover must be in plateau");
+            }
+            if (!mission.commands().matches("[LRM]*")) {
+                throw new InvalidFormatException("Rover command is not valid");
+            }
+            missions.add(mission);
         }
 
         return new MarsRoverGameState(plateau, missions);
@@ -27,14 +34,16 @@ public class MarsRoverInputParser {
         Plateau plateau;
         String[] limits = input.getFirst().strip().split("\\s+");
         if (limits.length != 2)
-            throw new InvalidFormatException("First line must contains 2 elements");
+            throw new InvalidFormatException("First line must contain 2 elements");
         try {
             plateau = new Plateau(
                     Integer.parseInt(limits[0]),
                     Integer.parseInt(limits[1])
             );
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            throw new InvalidFormatException("First line must contains 2 numbers");
+            throw new InvalidFormatException("First line must contain 2 numbers");
+        } catch (IllegalArgumentException e) {
+            throw new InvalidFormatException("One of plateau's limits is negative");
         }
         return plateau;
     }

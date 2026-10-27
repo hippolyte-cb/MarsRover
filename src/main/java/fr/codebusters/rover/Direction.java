@@ -7,8 +7,8 @@ public enum Direction {
     S(0, -1),
     W(-1, 0);
 
-    final int stepX;
-    final int stepY;
+    public final int stepX;
+    public final int stepY;
 
     Direction(int stepX, int stepY) {
         this.stepX = stepX;

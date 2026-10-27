@@ -1,8 +1,8 @@
 package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.dto.Plateau;
-import fr.codebusters.rover.dto.RoverMission;
+import fr.codebusters.rover.domain.Plateau;
+import fr.codebusters.rover.domain.RoverMission;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ public final class MarsRoverGameState {
 
     public MarsRoverGameState(Plateau plateau, List<RoverMission> missions) {
         this.plateau = plateau;
-        this.missions = missions;
+        this.missions = List.copyOf(missions);
     }
 
     public String processGame() throws InvalidFormatException {
@@ -30,7 +30,7 @@ public final class MarsRoverGameState {
                         mission.rover().getPosition().y(),
                         mission.rover().getDir()
                 ))
-                .collect(Collectors.joining("\r\n"));
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 
     public Plateau plateau() {

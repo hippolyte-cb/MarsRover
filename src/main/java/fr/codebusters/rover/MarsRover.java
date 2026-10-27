@@ -1,8 +1,8 @@
 package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.dto.Plateau;
-import fr.codebusters.rover.dto.Position;
+import fr.codebusters.rover.domain.Plateau;
+import fr.codebusters.rover.domain.Position;
 
 public class MarsRover {
 
@@ -32,10 +32,7 @@ public class MarsRover {
     }
 
     public void move(Plateau plateau) {
-        this.position = new Position(
-                Math.floorMod(position.x() + dir.stepX, plateau.limitX() + 1),
-                Math.floorMod(position.y() + dir.stepY, plateau.limitY() + 1)
-        );
+        this.position = plateau.nextPosition(this.position, this.dir);
     }
 
 

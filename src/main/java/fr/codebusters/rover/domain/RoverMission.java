@@ -1,4 +1,4 @@
-package fr.codebusters.rover.dto;
+package fr.codebusters.rover.domain;
 
 import fr.codebusters.rover.MarsRover;
 
