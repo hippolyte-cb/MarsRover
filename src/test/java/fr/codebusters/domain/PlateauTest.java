@@ -5,8 +5,7 @@ import fr.codebusters.rover.domain.Plateau;
 import fr.codebusters.rover.domain.Position;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlateauTest {
 
@@ -19,7 +18,8 @@ public class PlateauTest {
     @Test
     void should_give_zero_when_reach_the_limit() {
         Plateau p = new Plateau(1, 1);
-        assertEquals(new Position(1, 1), p.nextPosition(new Position(1, 0), Direction.N));
+        assertEquals(new Position(1, 0), p.nextPosition(new Position(1, 1), Direction.N));
+        assertEquals(new Position(0, 0), p.nextPosition(new Position(1, 0), Direction.W));
     }
 
     @Test
@@ -36,7 +36,8 @@ public class PlateauTest {
 
     @Test
     void plateau_should_not_contain_outside_position() {
-        Plateau p = new Plateau(1, 2);
-        assertTrue(p.contains(new Position(1, 1)));
+        Plateau p = new Plateau(1, 1);
+        assertFalse(p.contains(new Position(1, 2)));
+        assertFalse(p.contains(new Position(-1, 0)));
     }
 }
