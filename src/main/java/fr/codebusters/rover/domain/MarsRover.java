@@ -1,9 +1,6 @@
-package fr.codebusters.rover;
+package fr.codebusters.rover.domain;
 
 import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.domain.Direction;
-import fr.codebusters.rover.domain.Plateau;
-import fr.codebusters.rover.domain.Position;
 
 public class MarsRover {
 
