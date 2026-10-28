@@ -4,6 +4,8 @@ import fr.codebusters.exception.InvalidFormatException;
 import fr.codebusters.rover.domain.GameStatus;
 import fr.codebusters.rover.MarsRoverInputParser;
 import fr.codebusters.rover.MarsRoverGameState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,11 +14,9 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class Main {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
-        // TODO logger;
-        /*
-        TODO: Explain why there are comments
-         */
         try {
             // Check input
             Path filePath = checkInput(args);
@@ -29,26 +29,26 @@ public class Main {
 
             // Process game
             GameStatus endGameStatus = gameState.processGame();
-            System.out.printf("End game with status = %s\n", endGameStatus);
+            LOGGER.info("End game with status = {}", endGameStatus);
 
             String endGameReport = gameState.endGameReport();
 
             // Show endGameReport
-            System.out.println(endGameReport);
+            LOGGER.info(endGameReport);
 
         } catch (IOException e) {
-            System.err.printf("Cannot open the file %s\n", args[0]);
+            LOGGER.error("Cannot open the file {}", args[0]);
             System.exit(1);
         } catch (InvalidFormatException e) {
-            System.err.println(e.getMessage());
+            LOGGER.error(e.getMessage());
             System.exit(1);
         }
     }
 
     private static Path checkInput(String[] args) throws FileNotFoundException {
         if (args.length != 1) {
-            System.err.println("Rover must be called like that:");
-            System.err.println("java -jar rover.jar <file>");
+            LOGGER.error("Rover must be called like that:");
+            LOGGER.error("java -jar rover.jar <file>");
             throw new IllegalArgumentException("Expected one argument");
         }
 
