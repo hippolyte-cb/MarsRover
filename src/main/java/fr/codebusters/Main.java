@@ -38,10 +38,8 @@ public class Main {
 
         } catch (IOException e) {
             LOGGER.error("Cannot open the file {}", args[0]);
-            System.exit(1);
         } catch (InvalidFormatException e) {
             LOGGER.error(e.getMessage());
-            System.exit(1);
         }
     }
 

@@ -32,11 +32,11 @@ MMRMMRMRRM   <- rover 2: commands
 
 Commands:
 
-| Command | Effect |
-|---|---|
-| `L` | Spin 90° left, without moving |
-| `R` | Spin 90° right, without moving |
-| `M` | Move forward one grid point, keeping the same heading |
+| Command | Action | Effect |
+|---|---|---|
+| `L` | `LEFT` | Spin 90° left, without moving |
+| `R` | `RIGHT` | Spin 90° right, without moving |
+| `M` | `MOVE` | Move forward one grid point, keeping the same heading |
 
 The square directly North of `(x, y)` is `(x, y+1)`. Rovers move one after the other: the second rover starts only once the first one has finished.
 
@@ -53,14 +53,16 @@ One line per rover, in input order: final coordinates and heading.
 
 - **Plateau edges (wrap-around):** a rover that moves past an edge reappears on the opposite side, e.g. `2 5 N` + `M` on a `5 5` plateau ends at `2 0 N`. The rule lives in `Plateau.nextPosition`, so it can be changed in one place (for instance to keep the rover on the edge instead).
 - **Collisions:** not handled. Two rovers can end up on the same grid point.
-- **Validation before execution:** the whole file is checked before any rover moves, so an invalid command on one rover never leaves the others half-processed.
+- **Validation before execution:** the whole file is parsed and checked before any rover moves. Command letters are turned into typed `Action` values at parsing time, so the domain never receives an invalid command and an error on one rover never leaves the others half-processed.
+- **Layers:** `Main` handles the command line and the file, `MarsRoverInputParser` turns the input lines into domain objects, `MarsRoverGameState` runs the missions, and the `domain` package holds the model (`Plateau`, `Position`, `Direction`, `Action`, `MarsRover`). The domain depends on no other package of the project.
+- **Extensibility:** a mission drives any `NasaExplorer`, not only a `MarsRover`, so another kind of vehicle can be added without changing the game loop. `processGame` returns a `GameStatus` (currently always `VALID`) so that outcomes such as collisions can be reported later.
 
 ## Errors
 
-The program prints a message on stderr and exits with code `1` when:
+The program prints a message on stderr when:
 
 - no file, or more than one, is passed on the command line;
-- the file cannot be read;
+- the file does not exist or cannot be read;
 - the input is invalid:
   - the file does not have an odd number of lines (plateau line + 2 lines per rover);
   - the first line is not exactly two integers, or a limit is negative;
