@@ -1,7 +1,5 @@
 package fr.codebusters.rover.domain;
 
-import fr.codebusters.exception.InvalidFormatException;
-
 public class MarsRover {
 
     private Position position;
@@ -34,12 +32,12 @@ public class MarsRover {
     }
 
 
-    public void processCommand(Character command, Plateau plateau) throws InvalidFormatException {
+    public void processCommand(Character command, Plateau plateau) {
         switch (command) {
             case 'L' -> turnLeft();
             case 'R' -> turnRight();
             case 'M' -> move(plateau);
-            default -> throw new InvalidFormatException("Character %s is not a valid character".formatted(command));
+            default -> throw new IllegalArgumentException("Character '%s' is not a valid character".formatted(command));
         }
     }
 
