@@ -20,8 +20,8 @@ public final class MarsRoverGameState {
 
     public GameStatus processGame() {
         for (NasaMission mission : missions) {
-            for (Action a : mission.commands()) {
-                mission.nasaActionable().processAction(a, plateau);
+            for (Action a : mission.actions()) {
+                mission.nasaExplorer().processAction(a, plateau);
             }
         }
 

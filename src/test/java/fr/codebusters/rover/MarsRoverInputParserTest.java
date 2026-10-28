@@ -31,12 +31,12 @@ public class MarsRoverInputParserTest {
         List<NasaMission> missions = gameState.missions();
         assertEquals(1, missions.size());
 
-        MarsRover rover = (MarsRover) missions.getFirst().nasaActionable();
+        NasaExplorer rover = missions.getFirst().nasaExplorer();
         assertEquals(1, rover.getPosition().x());
         assertEquals(2, rover.getPosition().y());
         assertEquals(Direction.N, rover.getDirection());
 
-        List<Action> actions = missions.getFirst().commands();
+        List<Action> actions = missions.getFirst().actions();
         List<Action> expected = List.of(
                 Action.LEFT,
                 Action.MOVE,

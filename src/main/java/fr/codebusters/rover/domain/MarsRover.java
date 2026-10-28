@@ -1,6 +1,6 @@
 package fr.codebusters.rover.domain;
 
-public class MarsRover implements NasaActionable {
+public class MarsRover implements NasaExplorer {
 
     private Position position;
     private Direction direction;
@@ -36,6 +36,7 @@ public class MarsRover implements NasaActionable {
             case LEFT -> turnLeft();
             case RIGHT -> turnRight();
             case MOVE -> move(plateau);
+            default -> throw new IllegalArgumentException("Action '%s' is not handled".formatted(action));
         }
     }
 

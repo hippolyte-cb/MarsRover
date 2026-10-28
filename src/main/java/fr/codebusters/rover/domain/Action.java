@@ -1,6 +1,7 @@
 package fr.codebusters.rover.domain;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public enum Action {
     LEFT('L'),
@@ -13,9 +14,9 @@ public enum Action {
         this.identity = identity;
     }
 
-    public static Action fromChar(char c) {
+    public static Optional<Action> fromChar(char c) {
         return Arrays.stream(values())
                 .filter(action -> action.identity == c)
-                .findFirst().orElse(null);
+                .findFirst();
     }
 }

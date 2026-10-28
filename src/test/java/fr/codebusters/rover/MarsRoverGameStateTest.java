@@ -44,6 +44,6 @@ public class MarsRoverGameStateTest {
         GameStatus gameStatus = game.processGame();
         String endGameReport = game.endGameReport();
         assertEquals(GameStatus.VALID, gameStatus);
-        assertEquals("1 3 N\r\n5 1 E", endGameReport);
+        assertEquals("1 3 N" + System.lineSeparator() + "5 1 E", endGameReport);
     }
 }

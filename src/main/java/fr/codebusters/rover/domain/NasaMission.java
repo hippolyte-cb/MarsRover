@@ -2,12 +2,12 @@ package fr.codebusters.rover.domain;
 
 import java.util.List;
 
-public record NasaMission(NasaActionable nasaActionable, List<Action> commands) {
+public record NasaMission(NasaExplorer nasaExplorer, List<Action> actions) {
     public String createReport() {
         return "%d %d %s".formatted(
-                nasaActionable().getPosition().x(),
-                nasaActionable().getPosition().y(),
-                nasaActionable().getDirection()
+                nasaExplorer().getPosition().x(),
+                nasaExplorer().getPosition().y(),
+                nasaExplorer().getDirection()
         );
     }
 }

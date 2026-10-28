@@ -1,6 +1,6 @@
 package fr.codebusters.rover.domain;
 
-public interface NasaActionable {
+public interface NasaExplorer {
 
     Position getPosition();
 

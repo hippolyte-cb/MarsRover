@@ -5,6 +5,7 @@ import fr.codebusters.rover.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MarsRoverInputParser {
     public static MarsRoverGameState createGame(List<String> input) throws InvalidFormatException {
@@ -20,7 +21,7 @@ public class MarsRoverInputParser {
             String roverCommand = input.get(i + 1);
             NasaMission mission = createRoverMission(roverDescriptor, roverCommand);
 
-            if (!plateau.contains(mission.nasaActionable().getPosition())) {
+            if (!plateau.contains(mission.nasaExplorer().getPosition())) {
                 throw new InvalidFormatException("Rover must be in plateau");
             }
             missions.add(mission);
@@ -74,9 +75,9 @@ public class MarsRoverInputParser {
     private static List<Action> createActions(String roverCommand) throws InvalidFormatException {
         List<Action> actions = new ArrayList<>(roverCommand.length());
         for (char c : roverCommand.toCharArray()) {
-            Action action = Action.fromChar(c);
-            if (action == null) throw new InvalidFormatException("Rover command is not valid");
-            actions.add(action);
+            Optional<Action> action = Action.fromChar(c);
+            if (action.isEmpty()) throw new InvalidFormatException("Rover command is not valid");
+            actions.add(action.get());
         }
         return actions;
     }
