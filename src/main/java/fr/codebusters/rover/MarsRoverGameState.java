@@ -1,6 +1,5 @@
 package fr.codebusters.rover;
 
-import fr.codebusters.exception.InvalidFormatException;
 import fr.codebusters.rover.domain.Plateau;
 import fr.codebusters.rover.domain.RoverMission;
 
@@ -17,7 +16,7 @@ public final class MarsRoverGameState {
         this.missions = List.copyOf(missions);
     }
 
-    public String processGame() throws InvalidFormatException {
+    public String processGame() {
         for (RoverMission mission : missions) {
             for (char c : mission.commands().toCharArray()) {
                 mission.rover().processCommand(c, plateau);

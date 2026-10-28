@@ -1,9 +1,5 @@
-package fr.codebusters.rover;
+package fr.codebusters.rover.domain;
 
-import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.domain.Direction;
-import fr.codebusters.rover.domain.MarsRover;
-import fr.codebusters.rover.domain.Plateau;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -65,7 +61,7 @@ public class MarsRoverTest {
     }
 
     @Test
-    void should_turn_left_when_process_L_command() throws InvalidFormatException {
+    void should_turn_left_when_process_L_command() {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
         rover.processCommand('L', new Plateau(1, 1));
 
@@ -73,7 +69,7 @@ public class MarsRoverTest {
     }
 
     @Test
-    void should_turn_right_when_process_R_command() throws InvalidFormatException {
+    void should_turn_right_when_process_R_command() {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
         rover.processCommand('R', new Plateau(1, 1));
 
@@ -81,7 +77,7 @@ public class MarsRoverTest {
     }
 
     @Test
-    void should_move_when_process_M_command() throws InvalidFormatException {
+    void should_move_when_process_M_command() {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
         rover.processCommand('M', new Plateau(1, 1));
 
@@ -92,6 +88,6 @@ public class MarsRoverTest {
     @Test
     void should_throw_invalid_format_exception_when_process_unknown_command() {
         MarsRover rover = new MarsRover(0, 0, Direction.N);
-        assertThrows(InvalidFormatException.class, () -> rover.processCommand('T', new Plateau(1, 1)));
+        assertThrows(IllegalArgumentException.class, () -> rover.processCommand('T', new Plateau(1, 1)));
     }
 }
