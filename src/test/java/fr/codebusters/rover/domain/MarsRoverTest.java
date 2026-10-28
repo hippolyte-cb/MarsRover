@@ -9,25 +9,32 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MarsRoverTest {
 
 
     @Test
-    void should_turn_left_when_calling_turnLeft() {
+    void should_turn_left_when_processing_turnLeft() {
+        // GIVEN
         MarsRover rover = new MarsRover(0 , 0, Direction.N);
-        rover.turnLeft();
 
-        assertEquals(Direction.W, rover.getDir());
+        // WHEN
+        rover.processAction(Action.LEFT, new Plateau(1, 1));
+
+        // THEN
+        assertEquals(Direction.W, rover.getDirection());
     }
 
     @Test
-    void should_turn_right_when_calling_turnRight() {
+    void should_turn_right_when_processing_turnRight() {
+        // GIVEN
         MarsRover rover = new MarsRover(0 , 0, Direction.N);
-        rover.turnRight();
 
-        assertEquals(Direction.E, rover.getDir());
+        // WHEN
+        rover.processAction(Action.RIGHT, new Plateau(1, 1));
+
+        // THEN
+        assertEquals(Direction.E, rover.getDirection());
     }
 
     private static final Collection<Arguments> shouldMoveOneWhenCallingMoveParams = List.of(
@@ -41,53 +48,31 @@ public class MarsRoverTest {
 
     @ParameterizedTest
     @FieldSource("shouldMoveOneWhenCallingMoveParams")
-    void should_move_one_when_calling_move(Integer fromX, Integer fromY, Direction dir, Integer toX, Integer toY) {
+    void should_move_one_when_processing_move(Integer fromX, Integer fromY, Direction dir, Integer toX, Integer toY) {
+        // GIVEN
         MarsRover rover = new MarsRover(fromX , fromY, dir);
         Plateau plateau = new Plateau(1, 1);
-        rover.move(plateau);
 
+        // WHEN
+        rover.processAction(Action.MOVE, plateau);
+
+        // THEN
         assertEquals(toX, rover.getPosition().x());
         assertEquals(toY, rover.getPosition().y());
     }
 
     @Test
     void should_move_around_mars_when_cross_limit() {
+        // GIVEN
         MarsRover rover = new MarsRover(0, 0, Direction.N);
         Plateau plateau = new Plateau(1, 1);
-        rover.move(plateau);
-        rover.move(plateau);
+
+        // WHEN
+        rover.processAction(Action.MOVE, plateau);
+        rover.processAction(Action.MOVE, plateau);
+
+        // THEN
         assertEquals(0, rover.getPosition().x());
         assertEquals(0, rover.getPosition().y());
-    }
-
-    @Test
-    void should_turn_left_when_process_L_command() {
-        MarsRover rover = new MarsRover(0, 0, Direction.N);
-        rover.processCommand('L', new Plateau(1, 1));
-
-        assertEquals(Direction.W, rover.getDir());
-    }
-
-    @Test
-    void should_turn_right_when_process_R_command() {
-        MarsRover rover = new MarsRover(0, 0, Direction.N);
-        rover.processCommand('R', new Plateau(1, 1));
-
-        assertEquals(Direction.E, rover.getDir());
-    }
-
-    @Test
-    void should_move_when_process_M_command() {
-        MarsRover rover = new MarsRover(0, 0, Direction.N);
-        rover.processCommand('M', new Plateau(1, 1));
-
-        assertEquals(0, rover.getPosition().x());
-        assertEquals(1, rover.getPosition().y());
-    }
-
-    @Test
-    void should_throw_invalid_format_exception_when_process_unknown_command() {
-        MarsRover rover = new MarsRover(0, 0, Direction.N);
-        assertThrows(IllegalArgumentException.class, () -> rover.processCommand('T', new Plateau(1, 1)));
     }
 }

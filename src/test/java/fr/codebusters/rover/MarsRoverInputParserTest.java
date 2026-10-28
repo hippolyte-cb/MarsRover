@@ -1,10 +1,7 @@
 package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
-import fr.codebusters.rover.domain.Direction;
-import fr.codebusters.rover.domain.MarsRover;
-import fr.codebusters.rover.domain.Plateau;
-import fr.codebusters.rover.domain.RoverMission;
+import fr.codebusters.rover.domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,22 +16,39 @@ public class MarsRoverInputParserTest {
 
     @Test
     void should_create_correct_game_state_when_giving_correct_file() throws InvalidFormatException {
+        // GIVEN
         List<String> input = List.of("5 5", "1 2 N", "LMLMLMLMM");
-        MarsRoverGameState gameState = MarsRoverInputParser.parseInput(input);
+
+        // WHEN
+        MarsRoverGameState gameState = MarsRoverInputParser.createGame(input);
+
+        // THEN
         Plateau plateau = gameState.plateau();
 
         assertEquals(5, plateau.limitX());
         assertEquals(5, plateau.limitY());
 
-        List<RoverMission> missions = gameState.missions();
+        List<NasaMission> missions = gameState.missions();
         assertEquals(1, missions.size());
 
-        MarsRover rover = missions.getFirst().rover();
-
+        MarsRover rover = (MarsRover) missions.getFirst().nasaActionable();
         assertEquals(1, rover.getPosition().x());
         assertEquals(2, rover.getPosition().y());
-        assertEquals(Direction.N, rover.getDir());
-        assertEquals("LMLMLMLMM", missions.getFirst().commands());
+        assertEquals(Direction.N, rover.getDirection());
+
+        List<Action> actions = missions.getFirst().commands();
+        List<Action> expected = List.of(
+                Action.LEFT,
+                Action.MOVE,
+                Action.LEFT,
+                Action.MOVE,
+                Action.LEFT,
+                Action.MOVE,
+                Action.LEFT,
+                Action.MOVE,
+                Action.MOVE
+        );
+        assertEquals(expected, actions);
     }
 
     private static final Collection<Arguments> invalidInputSource = List.of(
@@ -52,6 +66,6 @@ public class MarsRoverInputParserTest {
     @ParameterizedTest
     @FieldSource("invalidInputSource")
     void should_throw_InvalidFormatException_when_input_is_invalid(List<String> input) {
-        assertThrows(InvalidFormatException.class, () -> MarsRoverInputParser.parseInput(input));
+        assertThrows(InvalidFormatException.class, () -> MarsRoverInputParser.createGame(input));
     }
 }

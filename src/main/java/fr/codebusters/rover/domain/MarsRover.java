@@ -1,43 +1,41 @@
 package fr.codebusters.rover.domain;
 
-public class MarsRover {
+public class MarsRover implements NasaActionable {
 
     private Position position;
-    private Direction dir;
+    private Direction direction;
 
     public Position getPosition() {
         return position;
     }
 
-    public Direction getDir() {
-        return dir;
+    public Direction getDirection() {
+        return direction;
     }
 
 
-    public MarsRover(int x, int y, Direction dir) {
+    public MarsRover(int x, int y, Direction direction) {
         this.position = new Position(x, y);
-        this.dir = dir;
+        this.direction = direction;
     }
 
-    public void turnLeft() {
-        this.dir = this.dir.left();
+    private void turnLeft() {
+        this.direction = this.direction.left();
     }
 
-    public void turnRight() {
-        this.dir = this.dir.right();
+    private void turnRight() {
+        this.direction = this.direction.right();
     }
 
-    public void move(Plateau plateau) {
-        this.position = plateau.nextPosition(this.position, this.dir);
+    private void move(Plateau plateau) {
+        this.position = plateau.nextPosition(this.position, this.direction);
     }
 
-
-    public void processCommand(Character command, Plateau plateau) {
-        switch (command) {
-            case 'L' -> turnLeft();
-            case 'R' -> turnRight();
-            case 'M' -> move(plateau);
-            default -> throw new IllegalArgumentException("Character '%s' is not a valid character".formatted(command));
+    public void processAction(Action action, Plateau plateau) {
+        switch (action) {
+            case LEFT -> turnLeft();
+            case RIGHT -> turnRight();
+            case MOVE -> move(plateau);
         }
     }
 
@@ -46,7 +44,7 @@ public class MarsRover {
         return "MarsRover[x=%d, y=%d, dir=%s]".formatted(
                 position.x(),
                 position.y(),
-                dir
+                direction
         );
     }
 }

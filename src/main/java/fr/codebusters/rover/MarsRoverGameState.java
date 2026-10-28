@@ -1,34 +1,37 @@
 package fr.codebusters.rover;
 
+import fr.codebusters.rover.domain.Action;
+import fr.codebusters.rover.domain.GameStatus;
 import fr.codebusters.rover.domain.Plateau;
-import fr.codebusters.rover.domain.RoverMission;
+import fr.codebusters.rover.domain.NasaMission;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class MarsRoverGameState {
     private final Plateau plateau;
-    private final List<RoverMission> missions;
+    private final List<NasaMission> missions;
 
 
-    public MarsRoverGameState(Plateau plateau, List<RoverMission> missions) {
+    public MarsRoverGameState(Plateau plateau, List<NasaMission> missions) {
         this.plateau = plateau;
-        this.missions = List.copyOf(missions);
+        this.missions = missions;
     }
 
-    public String processGame() {
-        for (RoverMission mission : missions) {
-            for (char c : mission.commands().toCharArray()) {
-                mission.rover().processCommand(c, plateau);
+    public GameStatus processGame() {
+        for (NasaMission mission : missions) {
+            for (Action a : mission.commands()) {
+                mission.nasaActionable().processAction(a, plateau);
             }
         }
+
+        return GameStatus.VALID;
+    }
+
+    public String endGameReport() {
         return missions
                 .stream()
-                .map(mission -> "%d %d %s".formatted(
-                        mission.rover().getPosition().x(),
-                        mission.rover().getPosition().y(),
-                        mission.rover().getDir()
-                ))
+                .map(NasaMission::createReport)
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
@@ -36,7 +39,7 @@ public final class MarsRoverGameState {
         return plateau;
     }
 
-    public List<RoverMission> missions() {
+    public List<NasaMission> missions() {
         return missions;
     }
 
