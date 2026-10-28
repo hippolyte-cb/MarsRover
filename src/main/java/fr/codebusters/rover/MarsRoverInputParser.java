@@ -1,9 +1,10 @@
 package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
+import fr.codebusters.rover.domain.Direction;
 import fr.codebusters.rover.domain.Plateau;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MarsRoverInputParser {
@@ -13,7 +14,7 @@ public class MarsRoverInputParser {
         }
 
         Plateau plateau = getPlateau(input);
-        List<RoverMission> missions = new LinkedList<>();
+        List<RoverMission> missions = new ArrayList<>(input.size() / 2);
 
         for (int i = 1; i < input.size(); i += 2) {
             RoverMission mission = getRoverMission(input, i);

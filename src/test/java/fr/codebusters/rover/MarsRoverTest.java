@@ -1,6 +1,7 @@
 package fr.codebusters.rover;
 
 import fr.codebusters.exception.InvalidFormatException;
+import fr.codebusters.rover.domain.Direction;
 import fr.codebusters.rover.domain.Plateau;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

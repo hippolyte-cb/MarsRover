@@ -1,6 +1,5 @@
 package fr.codebusters.rover.domain;
 
-import fr.codebusters.rover.Direction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

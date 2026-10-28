@@ -1,4 +1,4 @@
-package fr.codebusters.rover;
+package fr.codebusters.rover.domain;
 
 public enum Direction {
     // Order MUST NOT be changed
